@@ -1,197 +1,246 @@
-# Purchase Planner — 7-Week Development Plan
+# Purchase Planner – Development Plan (8 Weeks)
 
 ## Project Goal
 
-The goal of Purchase Planner is to help users create grocery shopping lists, compare product prices across stores, identify the cheapest store, generate an optimized multi-store basket, and calculate potential savings.
+Develop a web application that helps users create shopping lists, compare grocery prices across multiple stores, find the cheapest shopping option, and calculate potential savings.
 
-## Main Application Features
+---
 
-- user registration and login;
-- product catalog;
-- product search and filtering;
-- shopping list creation;
-- adding products and quantities;
-- price comparison between stores;
-- cheapest complete store calculation;
-- optimized basket calculation;
-- savings calculation;
-- comparison history;
-- administrator management of products, stores, categories, and prices;
-- CSV price import.
+# Week 1 – Project Planning
 
-## Week 1 — Planning and Requirements
+## Goal
 
-### Goal
-
-Define the project concept, scope, architecture, requirements, and development plan.
+Define the project scope and prepare the initial documentation.
 
 ### Tasks
 
-- define the project problem;
-- define the target users;
-- define project goals;
-- analyze similar solutions;
-- define MVP scope;
-- write user stories;
-- write functional requirements;
-- write non-functional requirements;
-- define application pages and routes;
-- design the database structure;
-- create the 7-week implementation plan.
+- Define the project problem and objectives
+- Identify target users
+- Define MVP scope
+- Analyze existing solutions
+- Select the technology stack
+- Create functional and non-functional requirements
+- Design the application structure
+- Design the initial database structure
+- Prepare the development plan
+- Submit the first weekly report
 
 ### Expected Result
 
-- clear project scope;
-- documented requirements;
-- initial architecture;
-- database design;
-- development roadmap.
+- Project concept is finalized
+- MVP is defined
+- Core documentation is completed
+- GitHub repository is prepared
 
-## Week 2 — Backend Foundation and Database
+---
 
-### Goal
+# Week 2 – Backend Foundation
 
-Create the backend foundation and connect the PostgreSQL database.
+## Goal
+
+Build the backend foundation and prepare the first working prototype.
 
 ### Tasks
 
-- initialize Node.js and TypeScript backend;
-- configure Express;
-- configure Prisma;
-- create PostgreSQL database;
-- implement Prisma schema;
-- create migrations;
-- create seed data;
-- create health-check endpoint;
-- configure environment variables.
+- Initialize the backend project
+- Configure Express and TypeScript
+- Configure PostgreSQL and Prisma
+- Create the initial database schema
+- Create database migrations
+- Seed the database
+- Implement basic API endpoints
+- Prepare the first demo
 
 ### Expected Result
 
-- running backend server;
-- connected database;
-- created database tables;
-- initial seed data.
+- Backend is running
+- Database is connected
+- Initial API is available
 
-## Week 3 — Authentication and Core Admin Features
+---
 
-### Goal
+# Week 3 – Authentication and Administration
 
-Implement user authentication and basic data management.
+## Goal
+
+Implement authentication and administration features.
 
 ### Tasks
 
-- implement user registration;
-- implement login;
-- hash passwords with bcrypt;
-- generate and verify JWT tokens;
-- create authentication middleware;
-- create role-based authorization;
-- implement category CRUD;
-- implement store CRUD;
-- implement product CRUD.
+- User registration
+- User login
+- JWT authentication
+- Password hashing
+- Authorization middleware
+- User roles
+- Category management
+- Store management
+- Product management
 
 ### Expected Result
 
-- users can register and log in;
-- administrators can manage categories, stores, and products.
+- Authentication works correctly
+- Administrator can manage application data
 
-## Week 4 — Prices and Shopping Lists
+---
 
-### Goal
+# Week 4 – Shopping Lists and Prices
 
-Implement price management and shopping list functionality.
+## Goal
+
+Implement shopping lists and price management.
 
 ### Tasks
 
-- implement price CRUD;
-- implement sale price logic;
-- implement CSV price import;
-- implement shopping list creation;
-- implement list update and deletion;
-- add products to shopping lists;
-- change product quantities;
-- remove products from lists;
-- enforce ownership rules.
+- Shopping list CRUD
+- Shopping list items
+- Product quantities
+- Price management
+- Sale prices
+- CSV import
+- Second project demo
 
 ### Expected Result
 
-- administrators can manage prices;
-- users can create and manage shopping lists.
+- Users can manage shopping lists
+- Administrators can manage prices
 
-## Week 5 — Price Comparison Algorithm
+---
 
-### Goal
+# Week 5 – Price Comparison Algorithm
 
-Implement the main business logic of Purchase Planner.
+## Goal
+
+Develop the main comparison algorithm.
 
 ### Tasks
 
-- calculate basket total for each store;
-- identify unavailable products;
-- identify the cheapest complete store;
-- calculate the cheapest store for each product;
-- generate optimized multi-store basket;
-- calculate optimized total;
-- calculate savings;
-- save comparison results;
-- create comparison history API.
+- Basket calculation
+- Store comparison
+- Cheapest store calculation
+- Optimized basket generation
+- Savings calculation
+- Comparison history
 
 ### Expected Result
 
-- working price comparison;
-- optimized basket calculation;
-- saved comparison history.
+- Price comparison works correctly
+- Users receive optimized shopping results
 
-## Week 6 — Frontend Development
+---
 
-### Goal
+# Week 6 – Frontend Development
 
-Create the main React user interface and connect it to the backend.
+## Goal
+
+Develop the user interface.
 
 ### Tasks
 
-- initialize React and TypeScript frontend;
-- configure React Router;
-- configure Redux Toolkit;
-- create registration and login pages;
-- create product catalog;
-- create product details page;
-- create shopping list pages;
-- create comparison results page;
-- create comparison history page;
-- create administrator pages;
-- connect frontend to API.
+- Configure React project
+- Configure Redux Toolkit
+- Configure React Router
+- Authentication pages
+- Product catalog
+- Shopping list pages
+- Comparison page
+- History page
+- Connect frontend with backend
 
 ### Expected Result
 
-- users can perform the main workflow through the interface;
-- administrators can manage application data.
+- Main user workflow is fully functional
 
-## Week 7 — Testing, Deployment, and Finalization
+---
 
-### Goal
+# Week 7 – Testing and Deployment
 
-Prepare the project for presentation and submission.
+## Goal
+
+Complete testing and prepare the application for deployment.
 
 ### Tasks
 
-- test core backend endpoints;
-- test authentication and authorization;
-- test comparison calculations;
-- test error handling;
-- fix discovered defects;
-- improve responsive design;
-- deploy frontend;
-- deploy backend;
-- deploy PostgreSQL database;
-- update README;
-- prepare project screenshots;
-- prepare demonstration scenario;
-- prepare final presentation.
+- Backend testing
+- Frontend testing
+- Bug fixing
+- Performance improvements
+- Deploy backend
+- Deploy frontend
+- Prepare project documentation
+- Prepare presentation materials
 
 ### Expected Result
 
-- deployed working application;
-- tested core functionality;
-- complete project documentation;
-- prepared final demonstration.
+- Fully working MVP
+- Deployed application
+- Completed documentation
+
+---
+
+# Week 8 – Final Presentation
+
+## Goal
+
+Prepare and present the diploma project.
+
+### Tasks
+
+- Final system testing
+- Demonstration rehearsal
+- Prepare presentation
+- Final documentation review
+- Diploma defense
+
+### Expected Result
+
+- Successful project presentation
+- Completed diploma project
+
+---
+
+# Milestones
+
+### Milestone 1
+
+Project planning completed.
+
+### Milestone 2
+
+Backend and database completed.
+
+### Milestone 3
+
+Authentication and administration completed.
+
+### Milestone 4
+
+Shopping lists and price management completed.
+
+### Milestone 5
+
+Price comparison algorithm completed.
+
+### Milestone 6
+
+Frontend completed.
+
+### Milestone 7
+
+Testing, deployment, and documentation completed.
+
+### Milestone 8
+
+Final presentation and diploma defense.
+
+---
+
+# Definition of Done
+
+The development plan is considered complete when:
+
+- all eight development weeks are defined;
+- each week includes a goal;
+- each week includes planned tasks;
+- each week includes an expected result;
+- project milestones are identified.
