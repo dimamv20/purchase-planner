@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProductUnit {
+  GRAM
+  KILOGRAM
+  MILLILITRE
+  LITRE
+  PIECE
+  PACK
+}
+
+enum PriceSource {
+  MANUAL
+  CSV
+  API
+}
+
+model User {
+  id            String             @id @default(uuid())
+  name          String
+  email         String             @unique
+  passwordHash  String
+  role          UserRole           @default(USER)
+  shoppingLists ShoppingList[]
+  comparisons   ComparisonResult[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id                String             @id @default(uuid())
+  name              String
+  brand             String
+  packageQuantity   Decimal            @db.Decimal(10, 2)
+  unit              ProductUnit
+  imageUrl          String?
+  barcode           String?            @unique
+  categoryId        String
+  category          Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  prices            Price[]
+  shoppingListItems ShoppingListItem[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([name])
+  @@index([brand])
+  @@index([categoryId])
+}
+
+model Store {
+  id                  String             @id @default(uuid())
+  name                String
+  address             String
+  city                String
+  imageUrl            String?
+  isActive            Boolean            @default(true)
+  prices              Price[]
+  cheapestComparisons ComparisonResult[] @relation("CheapestStore")
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  @@index([name])
+  @@index([city])
+}
+
+model Price {
+  id           String      @id @default(uuid())
+  productId    String
+  storeId      String
+  regularPrice Decimal     @db.Decimal(10, 2)
+  salePrice    Decimal?    @db.Decimal(10, 2)
+  saleStartsAt DateTime?
+  saleEndsAt   DateTime?
+  source       PriceSource @default(MANUAL)
+  isAvailable  Boolean     @default(true)
+  product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  store        Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([productId, storeId])
+  @@index([productId])
+  @@index([storeId])
+}
+
+model ShoppingList {
+  id          String             @id @default(uuid())
+  name        String
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       ShoppingListItem[]
+  comparisons ComparisonResult[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+}
+
+model ShoppingListItem {
+  id             String       @id @default(uuid())
+  shoppingListId String
+  productId      String
+  quantity       Int          @default(1)
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([shoppingListId, productId])
+  @@index([shoppingListId])
+  @@index([productId])
+}
+
+model ComparisonResult {
+  id                       String        @id @default(uuid())
+  userId                   String
+  shoppingListId           String?
+  shoppingListName         String
+  cheapestStoreId          String?
+  cheapestSingleStoreTotal Decimal?      @db.Decimal(10, 2)
+  optimizedTotal           Decimal       @db.Decimal(10, 2)
+  savings                  Decimal       @db.Decimal(10, 2)
+  storeTotals              Json
+  optimizedItems           Json
+  user                     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shoppingList             ShoppingList? @relation(fields: [shoppingListId], references: [id], onDelete: SetNull)
+  cheapestStore            Store?        @relation("CheapestStore", fields: [cheapestStoreId], references: [id], onDelete: SetNull)
+  createdAt                DateTime      @default(now())
+
+  @@index([userId])
+  @@index([shoppingListId])
+  @@index([cheapestStoreId])
+  @@index([createdAt])
+}

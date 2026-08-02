@@ -1,0 +1,31 @@
+{
+  "name": "purchase-planner-server",
+  "version": "1.0.0",
+  "description": "Backend API for Purchase Planner",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "^7.9.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.1",
+    "prisma": "^7.9.1",
+    "tsx": "^4.23.4",
+    "typescript": "^7.0.2"
+  }
+}
