@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import {getPrices, createPrice, getPricesById, updatePrice, deletePrice} from "../services/price.service.js";
-
+import {createPriceSchema,updatePriceSchema,} from "../validators/price.validator.js";
 
 export async function getPriceController(req: Request, res: Response) {
     const prices = await getPrices();
@@ -8,7 +8,8 @@ export async function getPriceController(req: Request, res: Response) {
 }
 
 export async function createPriceController(req: Request, res: Response) {
-    const price = await createPrice(req.body);
+    const data = createPriceSchema.parse(req.body);
+    const price = await createPrice(data);
     return res.status(201).json(price);
 }
 
@@ -21,7 +22,8 @@ export async function getPriceByIdController(req: Request<{ id: string }>, res: 
 
 export async function updatePriceController(req: Request<{ id: string }>, res: Response) {
     const priceId = req.params.id;
-    const updatedPrice = await updatePrice(priceId, req.body);
+    const data = updatePriceSchema.parse(req.body);
+    const updatedPrice = await updatePrice(priceId, data);
     return res.json(updatedPrice);
 }
 

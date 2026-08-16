@@ -1,15 +1,84 @@
 import prisma from "../lib/prisma.js";
 
-export async function getProducts(){
+
+export type GetProductsFilters = {
+    search?: string;
+    categoryId?: string;
+    page?: number;
+    limit?: number;
+};
+
+export async function getProducts(filters: GetProductsFilters) {
+    const page = filters.page ?? 1;
+    const limit = filters.limit ?? 10;
+
+    const skip = (page - 1) * limit;
+
+    const where = {
+        AND: [
+            filters.search
+                ? {
+                      OR: [
+                          {
+                              name: {
+                                  contains: filters.search,
+                                  mode: "insensitive" as const,
+                              },
+                          },
+                          {
+                              brand: {
+                                  contains: filters.search,
+                                  mode: "insensitive" as const,
+                              },
+                          },
+                      ],
+                  }
+                : {},
+
+            filters.categoryId
+                ? {
+                      categoryId: filters.categoryId,
+                  }
+                : {},
+        ],
+    };
+
     const products = await prisma.product.findMany({
+        where,
+
         include: {
             category: true,
-    }},
-    );
-    
-    return products;
-}
+            prices: {
+                include: {
+                    store: true,
+                },
+            },
+        },
 
+        orderBy: {
+            name: "asc",
+        },
+
+        skip,
+        take: limit,
+    });
+
+    const total = await prisma.product.count({
+        where,
+    });
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+        products,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages,
+        },
+    };
+}
 export async function getProductById(productId: string) {
     const product = await prisma.product.findUnique({
         where: {

@@ -4,6 +4,7 @@ import { createCategory } from "../services/category.service.js";
 import { getCategoryById } from "../services/category.service.js";
 import { updateCategory } from "../services/category.service.js";
 import { deleteCategory } from "../services/category.service.js";
+import {createCategorySchema,updateCategorySchema,} from "../validators/category.validator.js";
 
 export async function getCategoriesController(req: Request, res: Response) {
 
@@ -13,8 +14,11 @@ export async function getCategoriesController(req: Request, res: Response) {
 }
 
 export async function createCategoryController(req: Request, res: Response) {
-    const category = await createCategory(req.body);
+    
+    const data = createCategorySchema.parse(req.body);
 
+    const category = await createCategory(data);
+    
     return res.status(201).json(category);
 
 }
@@ -28,7 +32,8 @@ export async function getCategoryByIdController(req: Request<{ id: string }>, re
 
 export async function updateCategoryController(req: Request<{ id: string }>, res: Response) {
     const categoryId = req.params.id;
-    const updatedCategory = await updateCategory(categoryId, req.body);
+    const data = updateCategorySchema.parse(req.body);
+    const updatedCategory = await updateCategory(categoryId, data);
 
     return res.json(updatedCategory);
 

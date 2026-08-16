@@ -15,6 +15,7 @@ import shoppingListItemRoutes  from "./routes/shoppingListItems.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import comparisonRoutes from "./routes/comparison.route.js"
 
+import { ZodError } from "zod";
 const app = express();
 
 app.use(cors());
@@ -38,19 +39,27 @@ app.get("/api/health", (_request: Request, response: Response) => {
 });
 
 app.use(
-  (
-    error: Error,
-    _request: Request,
-    response: Response,
-    _next: NextFunction,
-  ) => {
-    console.error(error);
+    (
+        error: Error,
+        _request: Request,
+        response: Response,
+        _next: NextFunction,
+    ) => {
+        console.error(error);
 
-    response.status(500).json({
-      status: "error",
-      message: "Internal server error",
-    });
-  },
+        if (error instanceof ZodError) {
+            return response.status(400).json({
+                status: "error",
+                message: "Validation failed",
+                errors: error.issues,
+            });
+        }
+
+        return response.status(500).json({
+            status: "error",
+            message: "Internal server error",
+        });
+    },
 );
 
 export default app;

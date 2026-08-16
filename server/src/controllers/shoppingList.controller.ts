@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {getShoppingLists, createShoppingList, getShoppingListsById, updateShoppingList, deleteShoppingList} from "../services/shoppingList.service.js";
 import { addShoppingListItem } from "../services/shoppingListItem.service.js";
-
+import {createShoppingListSchema,updateShoppingListSchema,} from "../validators/shoppingList.validator.js";
 export async function getShoppingListsController(req: Request, res: Response) {
     const userId = res.locals.user.userId;
 
@@ -15,6 +15,8 @@ export async function createShoppingListController(
     res: Response
 ) {
     const userId = res.locals.user.userId;
+    
+    const data = createShoppingListSchema.parse(req.body);
 
     const shoppingList = await createShoppingList(
         userId,
@@ -35,6 +37,9 @@ export async function getShoppingListsByIdController(req: Request<{ id: string }
 export async function  updateShoppingListController(req: Request<{ id: string }>, res: Response ){
     const ShoppingListId = req.params.id;
     const userId = res.locals.user.userId;
+    
+    const data = updateShoppingListSchema.parse(req.body);
+
     const updatedShoppingList = await updateShoppingList(ShoppingListId,userId, req.body);
 
     return res.json(updatedShoppingList); 

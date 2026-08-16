@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 
 import { updateShoppingListItem, getShoppingListItemById, deleteShoppingListItem, addShoppingListItem } from "../services/shoppingListItem.service.js";
+
+import {addShoppingListItemSchema,updateShoppingListItemSchema,} from "../validators/shoppingListItem.validator.js";
+
 export async function updateShoppingListItemController(req: Request <{ id: string }>, res: Response){
     
     const  shoppingListItemId = req.params.id;
 
     const userId = res.locals.user.userId;
-    const updatedItem = await updateShoppingListItem(shoppingListItemId,userId,req.body);
+
+    const data = updateShoppingListItemSchema.parse(req.body);
+
+    const updatedItem = await updateShoppingListItem(shoppingListItemId,userId,data);
 
     return res.status(200).json(updatedItem);
 }
@@ -32,13 +38,14 @@ export async function addShoppingListItemController(
     if (typeof shoppingListId !== "string") {
         return res.status(400).json({ message: "Shopping list id is required" });
     }
+    
+    const data = addShoppingListItemSchema.parse(req.body);
 
     const item = await addShoppingListItem(
         shoppingListId,
         userId,
-        req.body
+        data
     );
-
     return res.status(201).json(item);
 }
 

@@ -4,6 +4,7 @@ import {createStore} from "../services/store.service.js";
 import { getStoreById } from "../services/store.service.js";
 import {updateStore} from "../services/store.service.js";
 import {deleteStore} from "../services/store.service.js";
+import {createStoreSchema,updateStoreSchema,} from "../validators/store.validator.js";
 
 export async function getStoresController( req: Request, res: Response) {
     const stores = await getStores();
@@ -11,8 +12,11 @@ export async function getStoresController( req: Request, res: Response) {
 }
 
 export async function createStoreController(req: Request, res: Response) {
-     const store = await createStore(req.body);
-   
+    
+    const data = createStoreSchema.parse(req.body);
+
+    const store = await createStore(data);
+    
        return res.status(201).json(store);
 }
 
@@ -24,7 +28,8 @@ export async function getStoreByIdController(req: Request<{ id: string }>, res: 
 
 export async function updateStoreController(req: Request<{ id: string }>, res: Response) {
     const storeId = req.params.id;
-    const updatestore = await updateStore(storeId,req.body);
+    const data = updateStoreSchema.parse(req.body);
+    const updatestore = await updateStore(storeId,data);
     return res.json(updatestore);
 }
 
