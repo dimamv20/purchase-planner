@@ -18,6 +18,121 @@ function getEffectivePrice(price: {
         : Number(price.regularPrice);
 }
 
+function getBestTwoStorePlan(
+    items: any[],
+    stores: {
+        storeId: string;
+        storeName: string;
+    }[]
+) {
+    let bestPlan: {
+        stores: {
+            id: string;
+            name: string;
+        }[];
+        total: number;
+        items: {
+            productId: string;
+            productName: string;
+            quantity: number;
+            store: {
+                id: string;
+                name: string;
+            };
+            unitPrice: number;
+            totalPrice: number;
+        }[];
+    } | null = null;
+
+    for (let i = 0; i < stores.length; i++) {
+        for (let j = i + 1; j < stores.length; j++) {
+            const storeA = stores[i];
+            const storeB = stores[j];
+
+            if (!storeA || !storeB) {
+                continue;
+            }
+
+            let pairTotal = 0;
+            let pairIsValid = true;
+
+            const pairItems: {
+                productId: string;
+                productName: string;
+                quantity: number;
+                store: {
+                    id: string;
+                    name: string;
+                };
+                unitPrice: number;
+                totalPrice: number;
+            }[] = [];
+
+            for (const item of items) {
+                const availablePrices = item.product.prices.filter(
+                    (price: any) =>
+                        price.store.id === storeA.storeId ||
+                        price.store.id === storeB.storeId
+                );
+
+                if (availablePrices.length === 0) {
+                    pairIsValid = false;
+                    break;
+                }
+
+                const cheapestPrice = availablePrices.reduce(
+                    (cheapest: any, current: any) => {
+                        return getEffectivePrice(current) <
+                            getEffectivePrice(cheapest)
+                            ? current
+                            : cheapest;
+                    }
+                );
+
+                const unitPrice = getEffectivePrice(cheapestPrice);
+                const totalPrice = unitPrice * item.quantity;
+
+                pairTotal += totalPrice;
+
+                pairItems.push({
+                    productId: item.product.id,
+                    productName: item.product.name,
+                    quantity: item.quantity,
+                    store: {
+                        id: cheapestPrice.store.id,
+                        name: cheapestPrice.store.name,
+                    },
+                    unitPrice,
+                    totalPrice,
+                });
+            }
+
+            if (!pairIsValid) {
+                continue;
+            }
+
+            if (!bestPlan || pairTotal < bestPlan.total) {
+                bestPlan = {
+                    stores: [
+                        {
+                            id: storeA.storeId,
+                            name: storeA.storeName,
+                        },
+                        {
+                            id: storeB.storeId,
+                            name: storeB.storeName,
+                        },
+                    ],
+                    total: pairTotal,
+                    items: pairItems,
+                };
+            }
+        }
+    }
+
+    return bestPlan;
+}
+
 export async function compareShoppingList(
     shoppingListId: string,
     userId: string
@@ -129,6 +244,13 @@ export async function compareShoppingList(
 
     const storeTotals = Array.from(storeTotalsMap.values());
 
+    const availableStores = storeTotals.map((store) => ({
+        storeId: store.storeId,
+        storeName: store.storeName,
+    }));
+
+
+
     const totalItemsCount = shoppingList.items.length;
 
     const completeStores = storeTotals.filter(
@@ -141,6 +263,11 @@ export async function compareShoppingList(
                   current.total < cheapest.total ? current : cheapest
               )
             : null;
+    
+    const bestTwoStorePlan = getBestTwoStorePlan(
+        shoppingList.items,
+        availableStores
+    );
 
     const cheapestSingleStoreTotal =
         cheapestSingleStore?.total ?? null;
@@ -179,6 +306,7 @@ export async function compareShoppingList(
         cheapestSingleStore,
         cheapestSingleStoreTotal,
         savings,
+        bestTwoStorePlan,
         createdAt: comparisonResult.createdAt,
     };
 }
