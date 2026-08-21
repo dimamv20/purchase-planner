@@ -1,10 +1,25 @@
 import { Request, Response } from "express";
 import { loginUser } from "../services/auth.service.js";
 import {registerSchema,loginSchema,} from "../validators/auth.validator.js";
+
 export async function loginController(req: Request, res: Response) {
-    const data = loginSchema.parse(req.body);
+   try {
+        const data = loginSchema.parse(req.body);
 
-    const result = await loginUser(data);
+        const result = await loginUser(data);
 
-    return res.json(result);
+        return res.json(result);
+    } catch (error) {
+        if (
+            error instanceof Error &&
+            error.message === "Invalid email or password"
+        ) {
+            return res.status(401).json({
+                status: "error",
+                message: "Invalid email or password",
+            });
+        }
+
+        throw error;
+    }
 }
