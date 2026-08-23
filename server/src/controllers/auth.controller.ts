@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { loginUser } from "../services/auth.service.js";
+
+import {loginUser,registerUser,} from "../services/auth.service.js";
+
 import {registerSchema,loginSchema,} from "../validators/auth.validator.js";
 
 export async function loginController(req: Request, res: Response) {
@@ -22,4 +24,15 @@ export async function loginController(req: Request, res: Response) {
 
         throw error;
     }
+}
+
+export async function registerController(
+    req: Request,
+    res: Response
+) {
+    const data = registerSchema.parse(req.body);
+
+    const user = await registerUser(data);
+
+    return res.status(201).json(user);
 }

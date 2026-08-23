@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
+import { createUser } from "./user.service.js";
 
 export type LoginData = {
     email: string;
@@ -48,4 +49,25 @@ export async function loginUser(data: LoginData) {
             role: user.role,
         },
     };
+}
+
+
+export type RegisterData = {
+    name: string;
+    email: string;
+    password: string;
+};
+
+export async function registerUser(data: RegisterData) {
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            email: data.email,
+        },
+    });
+
+    if (existingUser) {
+        throw new Error("User with this email already exists");
+    }
+
+    return createUser(data);
 }
