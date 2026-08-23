@@ -6,6 +6,7 @@ import { apiRequest } from "../services/api";
 type ShoppingList = {
     id: string;
     name: string;
+    budget: string | number | null;
     createdAt: string;
     updatedAt: string;
 };
@@ -13,6 +14,7 @@ type ShoppingList = {
 export default function ShoppingListsPage() {
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [newListName, setNewListName] = useState("");
+    const [budget, setBudget] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -50,6 +52,7 @@ export default function ShoppingListsPage() {
                 method: "POST",
                 body: JSON.stringify({
                     name: newListName,
+                    budget: budget ? Number(budget) : undefined,
                 }),
             });
 
@@ -59,6 +62,7 @@ export default function ShoppingListsPage() {
             ]);
 
             setNewListName("");
+            setBudget("");
         } catch (error) {
             setError(
                 error instanceof Error
@@ -85,6 +89,14 @@ export default function ShoppingListsPage() {
                         setNewListName(event.target.value)
                     }
                 />
+                <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="Budget"
+                    value={budget}
+                    onChange={(event) => setBudget(event.target.value)}
+                />
 
                 <button type="submit">
                     Create List
@@ -102,6 +114,12 @@ export default function ShoppingListsPage() {
                             <Link to={`/shopping-lists/${list.id}`}>
                                 {list.name}
                             </Link>
+
+                            {list.budget !== null && (
+                                <span>
+                                    {" "}— Budget: ${Number(list.budget).toFixed(2)}
+                                </span>
+                            )}
                         </li>
                     ))}
                 </ul>
