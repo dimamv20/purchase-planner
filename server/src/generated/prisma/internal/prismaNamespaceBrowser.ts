@@ -151,6 +151,7 @@ export type PriceScalarFieldEnum = (typeof PriceScalarFieldEnum)[keyof typeof Pr
 export const ShoppingListScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  budget: 'budget',
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

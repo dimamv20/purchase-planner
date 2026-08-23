@@ -20,13 +20,24 @@ export type ShoppingListModel = runtime.Types.Result.DefaultSelection<Prisma.$Sh
 
 export type AggregateShoppingList = {
   _count: ShoppingListCountAggregateOutputType | null
+  _avg: ShoppingListAvgAggregateOutputType | null
+  _sum: ShoppingListSumAggregateOutputType | null
   _min: ShoppingListMinAggregateOutputType | null
   _max: ShoppingListMaxAggregateOutputType | null
+}
+
+export type ShoppingListAvgAggregateOutputType = {
+  budget: runtime.Decimal | null
+}
+
+export type ShoppingListSumAggregateOutputType = {
+  budget: runtime.Decimal | null
 }
 
 export type ShoppingListMinAggregateOutputType = {
   id: string | null
   name: string | null
+  budget: runtime.Decimal | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -35,6 +46,7 @@ export type ShoppingListMinAggregateOutputType = {
 export type ShoppingListMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  budget: runtime.Decimal | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +55,7 @@ export type ShoppingListMaxAggregateOutputType = {
 export type ShoppingListCountAggregateOutputType = {
   id: number
   name: number
+  budget: number
   userId: number
   createdAt: number
   updatedAt: number
@@ -50,9 +63,18 @@ export type ShoppingListCountAggregateOutputType = {
 }
 
 
+export type ShoppingListAvgAggregateInputType = {
+  budget?: true
+}
+
+export type ShoppingListSumAggregateInputType = {
+  budget?: true
+}
+
 export type ShoppingListMinAggregateInputType = {
   id?: true
   name?: true
+  budget?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -61,6 +83,7 @@ export type ShoppingListMinAggregateInputType = {
 export type ShoppingListMaxAggregateInputType = {
   id?: true
   name?: true
+  budget?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -69,6 +92,7 @@ export type ShoppingListMaxAggregateInputType = {
 export type ShoppingListCountAggregateInputType = {
   id?: true
   name?: true
+  budget?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -113,6 +137,18 @@ export type ShoppingListAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ShoppingListAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ShoppingListSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ShoppingListMinAggregateInputType
@@ -143,6 +179,8 @@ export type ShoppingListGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   _count?: ShoppingListCountAggregateInputType | true
+  _avg?: ShoppingListAvgAggregateInputType
+  _sum?: ShoppingListSumAggregateInputType
   _min?: ShoppingListMinAggregateInputType
   _max?: ShoppingListMaxAggregateInputType
 }
@@ -150,10 +188,13 @@ export type ShoppingListGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type ShoppingListGroupByOutputType = {
   id: string
   name: string
+  budget: runtime.Decimal | null
   userId: string
   createdAt: Date
   updatedAt: Date
   _count: ShoppingListCountAggregateOutputType | null
+  _avg: ShoppingListAvgAggregateOutputType | null
+  _sum: ShoppingListSumAggregateOutputType | null
   _min: ShoppingListMinAggregateOutputType | null
   _max: ShoppingListMaxAggregateOutputType | null
 }
@@ -179,6 +220,7 @@ export type ShoppingListWhereInput = {
   NOT?: Prisma.ShoppingListWhereInput | Prisma.ShoppingListWhereInput[]
   id?: Prisma.StringFilter<"ShoppingList"> | string
   name?: Prisma.StringFilter<"ShoppingList"> | string
+  budget?: Prisma.DecimalNullableFilter<"ShoppingList"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"ShoppingList"> | string
   createdAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
@@ -190,6 +232,7 @@ export type ShoppingListWhereInput = {
 export type ShoppingListOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  budget?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -204,6 +247,7 @@ export type ShoppingListWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ShoppingListWhereInput[]
   NOT?: Prisma.ShoppingListWhereInput | Prisma.ShoppingListWhereInput[]
   name?: Prisma.StringFilter<"ShoppingList"> | string
+  budget?: Prisma.DecimalNullableFilter<"ShoppingList"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"ShoppingList"> | string
   createdAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
@@ -215,12 +259,15 @@ export type ShoppingListWhereUniqueInput = Prisma.AtLeast<{
 export type ShoppingListOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  budget?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ShoppingListCountOrderByAggregateInput
+  _avg?: Prisma.ShoppingListAvgOrderByAggregateInput
   _max?: Prisma.ShoppingListMaxOrderByAggregateInput
   _min?: Prisma.ShoppingListMinOrderByAggregateInput
+  _sum?: Prisma.ShoppingListSumOrderByAggregateInput
 }
 
 export type ShoppingListScalarWhereWithAggregatesInput = {
@@ -229,6 +276,7 @@ export type ShoppingListScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ShoppingListScalarWhereWithAggregatesInput | Prisma.ShoppingListScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ShoppingList"> | string
   name?: Prisma.StringWithAggregatesFilter<"ShoppingList"> | string
+  budget?: Prisma.DecimalNullableWithAggregatesFilter<"ShoppingList"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringWithAggregatesFilter<"ShoppingList"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ShoppingList"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ShoppingList"> | Date | string
@@ -237,6 +285,7 @@ export type ShoppingListScalarWhereWithAggregatesInput = {
 export type ShoppingListCreateInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShoppingListsInput
@@ -247,6 +296,7 @@ export type ShoppingListCreateInput = {
 export type ShoppingListUncheckedCreateInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -257,6 +307,7 @@ export type ShoppingListUncheckedCreateInput = {
 export type ShoppingListUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShoppingListsNestedInput
@@ -267,6 +318,7 @@ export type ShoppingListUpdateInput = {
 export type ShoppingListUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -277,6 +329,7 @@ export type ShoppingListUncheckedUpdateInput = {
 export type ShoppingListCreateManyInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -285,6 +338,7 @@ export type ShoppingListCreateManyInput = {
 export type ShoppingListUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -292,6 +346,7 @@ export type ShoppingListUpdateManyMutationInput = {
 export type ShoppingListUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -310,14 +365,20 @@ export type ShoppingListOrderByRelationAggregateInput = {
 export type ShoppingListCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  budget?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
+export type ShoppingListAvgOrderByAggregateInput = {
+  budget?: Prisma.SortOrder
+}
+
 export type ShoppingListMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  budget?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -326,9 +387,14 @@ export type ShoppingListMaxOrderByAggregateInput = {
 export type ShoppingListMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  budget?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ShoppingListSumOrderByAggregateInput = {
+  budget?: Prisma.SortOrder
 }
 
 export type ShoppingListScalarRelationFilter = {
@@ -416,6 +482,7 @@ export type ShoppingListUpdateOneWithoutComparisonsNestedInput = {
 export type ShoppingListCreateWithoutUserInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.ShoppingListItemCreateNestedManyWithoutShoppingListInput
@@ -425,6 +492,7 @@ export type ShoppingListCreateWithoutUserInput = {
 export type ShoppingListUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.ShoppingListItemUncheckedCreateNestedManyWithoutShoppingListInput
@@ -463,6 +531,7 @@ export type ShoppingListScalarWhereInput = {
   NOT?: Prisma.ShoppingListScalarWhereInput | Prisma.ShoppingListScalarWhereInput[]
   id?: Prisma.StringFilter<"ShoppingList"> | string
   name?: Prisma.StringFilter<"ShoppingList"> | string
+  budget?: Prisma.DecimalNullableFilter<"ShoppingList"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"ShoppingList"> | string
   createdAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ShoppingList"> | Date | string
@@ -471,6 +540,7 @@ export type ShoppingListScalarWhereInput = {
 export type ShoppingListCreateWithoutItemsInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShoppingListsInput
@@ -480,6 +550,7 @@ export type ShoppingListCreateWithoutItemsInput = {
 export type ShoppingListUncheckedCreateWithoutItemsInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -505,6 +576,7 @@ export type ShoppingListUpdateToOneWithWhereWithoutItemsInput = {
 export type ShoppingListUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShoppingListsNestedInput
@@ -514,6 +586,7 @@ export type ShoppingListUpdateWithoutItemsInput = {
 export type ShoppingListUncheckedUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -523,6 +596,7 @@ export type ShoppingListUncheckedUpdateWithoutItemsInput = {
 export type ShoppingListCreateWithoutComparisonsInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShoppingListsInput
@@ -532,6 +606,7 @@ export type ShoppingListCreateWithoutComparisonsInput = {
 export type ShoppingListUncheckedCreateWithoutComparisonsInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -557,6 +632,7 @@ export type ShoppingListUpdateToOneWithWhereWithoutComparisonsInput = {
 export type ShoppingListUpdateWithoutComparisonsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShoppingListsNestedInput
@@ -566,6 +642,7 @@ export type ShoppingListUpdateWithoutComparisonsInput = {
 export type ShoppingListUncheckedUpdateWithoutComparisonsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -575,6 +652,7 @@ export type ShoppingListUncheckedUpdateWithoutComparisonsInput = {
 export type ShoppingListCreateManyUserInput = {
   id?: string
   name: string
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -582,6 +660,7 @@ export type ShoppingListCreateManyUserInput = {
 export type ShoppingListUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.ShoppingListItemUpdateManyWithoutShoppingListNestedInput
@@ -591,6 +670,7 @@ export type ShoppingListUpdateWithoutUserInput = {
 export type ShoppingListUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.ShoppingListItemUncheckedUpdateManyWithoutShoppingListNestedInput
@@ -600,6 +680,7 @@ export type ShoppingListUncheckedUpdateWithoutUserInput = {
 export type ShoppingListUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -647,6 +728,7 @@ export type ShoppingListCountOutputTypeCountComparisonsArgs<ExtArgs extends runt
 export type ShoppingListSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  budget?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -659,6 +741,7 @@ export type ShoppingListSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type ShoppingListSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  budget?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -668,6 +751,7 @@ export type ShoppingListSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 export type ShoppingListSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  budget?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -677,12 +761,13 @@ export type ShoppingListSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type ShoppingListSelectScalar = {
   id?: boolean
   name?: boolean
+  budget?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ShoppingListOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["shoppingList"]>
+export type ShoppingListOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "budget" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["shoppingList"]>
 export type ShoppingListInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   items?: boolean | Prisma.ShoppingList$itemsArgs<ExtArgs>
@@ -706,6 +791,7 @@ export type $ShoppingListPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    budget: runtime.Decimal | null
     userId: string
     createdAt: Date
     updatedAt: Date
@@ -1137,6 +1223,7 @@ export interface Prisma__ShoppingListClient<T, Null = never, ExtArgs extends run
 export interface ShoppingListFieldRefs {
   readonly id: Prisma.FieldRef<"ShoppingList", 'String'>
   readonly name: Prisma.FieldRef<"ShoppingList", 'String'>
+  readonly budget: Prisma.FieldRef<"ShoppingList", 'Decimal'>
   readonly userId: Prisma.FieldRef<"ShoppingList", 'String'>
   readonly createdAt: Prisma.FieldRef<"ShoppingList", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ShoppingList", 'DateTime'>

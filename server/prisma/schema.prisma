@@ -107,6 +107,7 @@ model Price {
 model ShoppingList {
   id          String             @id @default(uuid())
   name        String
+  budget      Decimal?
   userId      String
   user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   items       ShoppingListItem[]

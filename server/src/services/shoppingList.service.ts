@@ -27,10 +27,12 @@ export async function getShoppingLists(userId: string) {
 
 export type CreateShoppingListData = {
     name: string;
+    budget?: number;
 };
 
 export type UpdateShoppingListData = {
     name?: string;
+    budget?: number | null;
 };
 
 export async function createShoppingList(
@@ -44,6 +46,7 @@ export async function createShoppingList(
     const shoppingList = await prisma.shoppingList.create({
         data: {
             name: data.name.trim(),
+            budget: data.budget,
             userId,
         },
         include: {
@@ -83,7 +86,8 @@ export async function updateShoppingList(shoppingListId: string,userId: string, 
     }
 
     const updateData: Partial<UpdateShoppingListData> = {};
-    if (data.name !== undefined) updateData.name = data.name?.trim();
+    if (data.name !== undefined) updateData.name = data.name.trim();
+    if (data.budget !== undefined) {updateData.budget = data.budget;}
 
     const updatedShoppingList = await prisma.shoppingList.update({
         where: { id: shoppingListId },
