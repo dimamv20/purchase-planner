@@ -19,6 +19,7 @@ type ShoppingListItem = {
 type ShoppingList = {
     id: string;
     name: string;
+    budget: string | number | null;
     items: ShoppingListItem[];
 };
 
@@ -205,7 +206,7 @@ export default function ShoppingListPage() {
         }
     }
     async function handleCompare() {
-        if (!id) {
+        if (!id || !shoppingList) {
             return;
         }
 
@@ -215,7 +216,10 @@ export default function ShoppingListPage() {
             );
 
             navigate("/comparison", {
-                state: result,
+                state: {
+                    ...result,
+                    budget: shoppingList.budget,
+                },
             });
         } catch (error) {
             setError(
@@ -228,7 +232,11 @@ export default function ShoppingListPage() {
     return (
         <div>
             <h1>{shoppingList.name}</h1>
-
+            {shoppingList.budget !== null && (
+                <p>
+                    Budget: ${Number(shoppingList.budget).toFixed(2)}
+                </p>
+            )}
             {shoppingList.items.length === 0 ? (
                 <p>No products in this list.</p>
             ) : (

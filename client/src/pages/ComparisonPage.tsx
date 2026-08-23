@@ -14,6 +14,7 @@ type ComparisonResult = {
     }[];
 
     optimizedTotal: number;
+    budget: string | number | null;
 
     cheapestSingleStore: {
         storeId: string;
@@ -62,7 +63,15 @@ export default function ComparisonPage() {
             </div>
         );
     }
+    const budget =
+        comparison.budget !== null
+            ? Number(comparison.budget)
+            : null;
 
+    const budgetDifference =
+        budget !== null
+            ? budget - Number(comparison.optimizedTotal)
+            : null;
     return (
         <div>
             <button onClick={() => navigate(-1)}>
@@ -76,7 +85,24 @@ export default function ComparisonPage() {
                     Optimized Total: $
                     {comparison.optimizedTotal.toFixed(2)}
                 </h2>
+                {budget !== null && (
+                    <div>
+                        <p>
+                            Budget: ${budget.toFixed(2)}
+                        </p>
 
+                        {budgetDifference !== null && budgetDifference >= 0 ? (
+                            <p>
+                                Remaining: ${budgetDifference.toFixed(2)}
+                            </p>
+                        ) : (
+                            <p>
+                                Over budget: $
+                                {Math.abs(budgetDifference ?? 0).toFixed(2)}
+                            </p>
+                        )}
+                    </div>
+                )}
                 <p>
                     Cheapest Single Store: $
                     {comparison.cheapestSingleStoreTotal?.toFixed(2) ?? "N/A"}
