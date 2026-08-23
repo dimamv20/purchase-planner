@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
-
+import { Link } from "react-router-dom";
 type Comparison = {
     id: string;
     shoppingListId: string;
@@ -54,7 +54,11 @@ export default function ComparisonsPage() {
                 <ul>
                     {comparisons.map((comparison) => (
                         <li key={comparison.id}>
-                            <h3>{comparison.shoppingListName}</h3>
+                            <h3>
+                                <Link to={`/comparisons/${comparison.id}`}>
+                                    {comparison.shoppingListName}
+                                </Link>
+                            </h3>
 
                             <p>
                                 Optimized total: $

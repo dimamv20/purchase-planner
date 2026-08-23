@@ -8,6 +8,7 @@ import ProductsPage from "./pages/ProductsPage";
 import ComparisonPage from "./pages/ComparisonPage";
 import ComparisonsPage from "./pages/ComparisonsPage";
 import RegisterPage from "./pages/RegisterPage";
+import ComparisonDetailsPage from "./pages/ComparisonDetailsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/AppLayout";
@@ -24,7 +25,7 @@ function App() {
                 path="/login"
                 element={<LoginPage />}
             />
-            
+
             <Route 
                 path="/register" 
                 element={<RegisterPage />}
@@ -65,6 +66,10 @@ function App() {
                 <Route
                     path="/comparisons"
                     element={<ComparisonsPage />}
+                />
+                <Route
+                    path="/comparisons/:id"
+                    element={<ComparisonDetailsPage />}
                 />
             </Route>
         </Routes>
