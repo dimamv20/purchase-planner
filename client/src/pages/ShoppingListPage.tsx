@@ -47,7 +47,7 @@ export default function ShoppingListPage() {
         useState<ShoppingList | null>(null);
 
     const [loading, setLoading] = useState(true);
-
+    const [budgetInput, setBudgetInput] = useState("");
     const [error, setError] = useState("");
     const [products, setProducts] = useState<AvailableProduct[]>([]);
 
@@ -66,6 +66,7 @@ export default function ShoppingListPage() {
                 );
 
                 setShoppingList(data);
+                setBudgetInput(data.budget !== null? String(data.budget): "");
                 const productsData: ProductsResponse = await apiRequest("/products");
 
                 setProducts(productsData.products);
@@ -229,6 +230,35 @@ export default function ShoppingListPage() {
             );
         }
     }
+
+    async function handleUpdateBudget() {
+        if (!id || !shoppingList) {
+            return;
+        }
+
+        try {
+            const updatedList = await apiRequest(
+                `/shopping-lists/${id}`,
+                {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        budget: budgetInput
+                            ? Number(budgetInput)
+                            : null,
+                    }),
+                }
+            );
+
+            setShoppingList(updatedList);
+        } catch (error) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "Could not update budget"
+            );
+        }
+    }
+
     return (
         <div>
             <h1>{shoppingList.name}</h1>
@@ -237,6 +267,25 @@ export default function ShoppingListPage() {
                     Budget: ${Number(shoppingList.budget).toFixed(2)}
                 </p>
             )}
+            <div>
+                <input
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Budget"
+                    value={budgetInput}
+                    onChange={(event) =>
+                        setBudgetInput(event.target.value)
+                    }
+                />
+
+                <button
+                    type="button"
+                    onClick={handleUpdateBudget}
+                >
+                    Update Budget
+                </button>
+            </div>
             {shoppingList.items.length === 0 ? (
                 <p>No products in this list.</p>
             ) : (
