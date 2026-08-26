@@ -564,3 +564,130 @@ button {
 
     margin-top: 24px;
 }
+
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.product-actions .primary-button,
+.product-actions .secondary-button {
+    flex: 1;
+    margin-top: 0;
+    text-align: center;
+}
+
+.product-details-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-details-page {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #9f87ff;
+    font-size: 14px;
+}
+
+.product-details-card,
+.prices-panel {
+    padding: 26px;
+    border: 1px solid #272b3a;
+    border-radius: 16px;
+    background: #171a24;
+}
+
+.product-details-header h1 {
+    margin: 16px 0 6px;
+    font-size: 32px;
+}
+
+.product-details-header p {
+    margin: 0;
+    color: #858ca3;
+}
+
+.product-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.product-info-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #0f1117;
+}
+
+.product-info-grid span {
+    color: #858ca3;
+    font-size: 12px;
+}
+
+.prices-panel {
+    margin-top: 20px;
+}
+
+.prices-panel .panel-header p {
+    margin: 5px 0 0;
+    color: #858ca3;
+    font-size: 13px;
+}
+
+.prices-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 0;
+    border-bottom: 1px solid #272b3a;
+}
+
+.price-row:last-child {
+    border-bottom: 0;
+}
+
+.price-row > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.best-price-badge {
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: rgba(135, 230, 168, 0.12);
+    color: #87e6a8;
+    font-size: 11px;
+}
+
+.price-value {
+    font-size: 18px;
+}
+
+@media (max-width: 720px) {
+    .product-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-actions {
+        flex-direction: column;
+    }
+}

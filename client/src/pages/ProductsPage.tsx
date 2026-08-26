@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { apiRequest } from "../services/api";
 
+import { Link } from "react-router-dom";
+
 type Product = {
     id: string;
     name: string;
@@ -249,17 +251,26 @@ export default function ProductsPage() {
                                         {product.unit}
                                     </strong>
                                 </div>
-                                <button
-                                    type="button"
-                                    className="primary-button"
-                                    onClick={() => {
-                                        setSelectedProductId(product.id);
-                                        setQuantity(1);
-                                        setSuccessMessage("");
-                                    }}
-                                >
-                                    Add to List
-                                </button>
+                                <div className="product-actions">
+                                    <Link
+                                        to={`/products/${product.id}`}
+                                        className="secondary-button product-details-button"
+                                    >
+                                        View Details
+                                    </Link>
+
+                                    <button
+                                        type="button"
+                                        className="primary-button"
+                                        onClick={() => {
+                                            setSelectedProductId(product.id);
+                                            setQuantity(1);
+                                            setSuccessMessage("");
+                                        }}
+                                    >
+                                        Add to List
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

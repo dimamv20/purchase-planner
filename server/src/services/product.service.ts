@@ -86,6 +86,11 @@ export async function getProductById(productId: string) {
         },
         include: {
             category: true,
+            prices: {
+                include: {
+                    store: true,
+                },
+            },
         },
     });
     return product;

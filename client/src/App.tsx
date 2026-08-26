@@ -9,7 +9,7 @@ import ComparisonPage from "./pages/ComparisonPage";
 import ComparisonsPage from "./pages/ComparisonsPage";
 import RegisterPage from "./pages/RegisterPage";
 import ComparisonDetailsPage from "./pages/ComparisonDetailsPage";
-
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/AppLayout";
 
@@ -48,6 +48,11 @@ function App() {
                     element={<ProductsPage />}
                 />
 
+                <Route
+                    path="/products/:id"
+                    element={<ProductDetailsPage />}
+                />
+                
                 <Route
                     path="/shopping-lists"
                     element={<ShoppingListsPage />}
