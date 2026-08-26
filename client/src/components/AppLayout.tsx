@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 export default function AppLayout() {
     const navigate = useNavigate();
@@ -9,29 +9,57 @@ export default function AppLayout() {
     }
 
     return (
-        <div className="app-layout">
+        <div className="app-shell">
             <aside className="sidebar">
-                <h2>Purchase Planner</h2>
+                <div className="sidebar-brand">
+                    <div className="brand-mark">PP</div>
 
-                <nav>
-                    <Link to="/dashboard">
+                    <div>
+                        <h2>Purchase Planner</h2>
+                        <p>Smart shopping</p>
+                    </div>
+                </div>
+
+                <nav className="sidebar-nav">
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) =>
+                            isActive ? "nav-link active" : "nav-link"
+                        }
+                    >
                         Dashboard
-                    </Link>
+                    </NavLink>
 
-                    <Link to="/products">
+                    <NavLink
+                        to="/products"
+                        className={({ isActive }) =>
+                            isActive ? "nav-link active" : "nav-link"
+                        }
+                    >
                         Products
-                    </Link>
+                    </NavLink>
 
-                    <Link to="/shopping-lists">
+                    <NavLink
+                        to="/shopping-lists"
+                        className={({ isActive }) =>
+                            isActive ? "nav-link active" : "nav-link"
+                        }
+                    >
                         Shopping Lists
-                    </Link>
+                    </NavLink>
 
-                    <Link to="/comparisons">
+                    <NavLink
+                        to="/comparisons"
+                        className={({ isActive }) =>
+                            isActive ? "nav-link active" : "nav-link"
+                        }
+                    >
                         Comparisons
-                    </Link>
+                    </NavLink>
                 </nav>
 
                 <button
+                    className="logout-button"
                     type="button"
                     onClick={handleLogout}
                 >

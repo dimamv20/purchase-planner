@@ -80,94 +80,116 @@ export default function DashboardPage() {
     const recentComparisons = comparisons.slice(0, 3);
 
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <p>Overview of your shopping activity.</p>
-
-            <section>
+        <div className="dashboard-page">
+            <div className="page-header">
                 <div>
-                    <h3>Shopping Lists</h3>
-                    <p>{shoppingLists.length}</p>
+                    <h1>Dashboard</h1>
+                    <p>Overview of your shopping activity.</p>
+                </div>
+            </div>
+
+            <section className="stats-grid">
+                <div className="stat-card">
+                    <span className="stat-label">Shopping Lists</span>
+                    <strong>{shoppingLists.length}</strong>
                 </div>
 
-                <div>
-                    <h3>Comparisons</h3>
-                    <p>{comparisons.length}</p>
+                <div className="stat-card">
+                    <span className="stat-label">Comparisons</span>
+                    <strong>{comparisons.length}</strong>
                 </div>
 
-                <div>
-                    <h3>Total Saved</h3>
-                    <p>${totalSaved.toFixed(2)}</p>
+                <div className="stat-card">
+                    <span className="stat-label">Total Saved</span>
+                    <strong>${totalSaved.toFixed(2)}</strong>
                 </div>
 
-                <div>
-                    <h3>Saved This Month</h3>
-                    <p>${savedThisMonth.toFixed(2)}</p>
+                <div className="stat-card">
+                    <span className="stat-label">Saved This Month</span>
+                    <strong>${savedThisMonth.toFixed(2)}</strong>
                 </div>
             </section>
 
-            <section>
-                <h2>Recent Shopping Lists</h2>
+            <section className="dashboard-grid">
+                <div className="panel">
+                    <div className="panel-header">
+                        <h2>Recent Shopping Lists</h2>
+                        <Link to="/shopping-lists">View all</Link>
+                    </div>
 
-                {recentShoppingLists.length === 0 ? (
-                    <p>No shopping lists yet.</p>
-                ) : (
-                    <ul>
-                        {recentShoppingLists.map((list) => (
-                            <li key={list.id}>
+                    {recentShoppingLists.length === 0 ? (
+                        <p className="empty-state">
+                            No shopping lists yet.
+                        </p>
+                    ) : (
+                        <div className="dashboard-list">
+                            {recentShoppingLists.map((list) => (
                                 <Link
+                                    key={list.id}
                                     to={`/shopping-lists/${list.id}`}
+                                    className="dashboard-list-item"
                                 >
-                                    {list.name}
+                                    <div>
+                                        <strong>{list.name}</strong>
+                                        <span>
+                                            {new Date(
+                                                list.createdAt
+                                            ).toLocaleDateString()}
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        {list.budget !== null
+                                            ? `$${Number(list.budget).toFixed(2)}`
+                                            : "No budget"}
+                                    </div>
                                 </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
-                                {list.budget !== null && (
-                                    <span>
-                                        {" "}
-                                        — Budget: $
-                                        {Number(list.budget).toFixed(2)}
-                                    </span>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <div className="panel">
+                    <div className="panel-header">
+                        <h2>Recent Comparisons</h2>
+                        <Link to="/comparisons">View all</Link>
+                    </div>
 
-                <Link to="/shopping-lists">
-                    View all shopping lists
-                </Link>
-            </section>
-
-            <section>
-                <h2>Recent Comparisons</h2>
-
-                {recentComparisons.length === 0 ? (
-                    <p>No comparisons yet.</p>
-                ) : (
-                    <ul>
-                        {recentComparisons.map((comparison) => (
-                            <li key={comparison.id}>
+                    {recentComparisons.length === 0 ? (
+                        <p className="empty-state">
+                            No comparisons yet.
+                        </p>
+                    ) : (
+                        <div className="dashboard-list">
+                            {recentComparisons.map((comparison) => (
                                 <Link
+                                    key={comparison.id}
                                     to={`/comparisons/${comparison.id}`}
+                                    className="dashboard-list-item"
                                 >
-                                    {comparison.shoppingListName}
+                                    <div>
+                                        <strong>
+                                            {comparison.shoppingListName}
+                                        </strong>
+
+                                        <span>
+                                            {new Date(
+                                                comparison.createdAt
+                                            ).toLocaleDateString()}
+                                        </span>
+                                    </div>
+
+                                    <div className="saved-value">
+                                        +$
+                                        {Number(
+                                            comparison.savings
+                                        ).toFixed(2)}
+                                    </div>
                                 </Link>
-
-                                <span>
-                                    {" "}
-                                    — Saved: $
-                                    {Number(
-                                        comparison.savings
-                                    ).toFixed(2)}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-
-                <Link to="/comparisons">
-                    View all comparisons
-                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </section>
         </div>
     );
