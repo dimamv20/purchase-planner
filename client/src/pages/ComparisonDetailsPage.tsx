@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { apiRequest } from "../services/api";
 
@@ -70,45 +70,140 @@ export default function ComparisonDetailsPage() {
     }
 
     return (
-        <div>
-            <h1>{comparison.shoppingListName}</h1>
+        <div className="comparison-details-page">
+            <Link
+                to="/comparisons"
+                className="back-link"
+            >
+                ← Back to Comparison History
+            </Link>
 
-            <p>
-                Date: {new Date(comparison.createdAt).toLocaleString()}
-            </p>
+            <div className="page-header comparison-details-header">
+                <div>
+                    <p className="eyebrow">Saved Comparison</p>
 
-            <p>
-                Optimized total: $
-                {Number(comparison.optimizedTotal).toFixed(2)}
-            </p>
+                    <h1>{comparison.shoppingListName}</h1>
 
-            <p>
-                Best single store total: $
-                {comparison.cheapestSingleStoreTotal !== null
-                    ? Number(
-                          comparison.cheapestSingleStoreTotal
-                      ).toFixed(2)
-                    : "N/A"}
-            </p>
+                    <p>
+                        {new Date(
+                            comparison.createdAt
+                        ).toLocaleString()}
+                    </p>
+                </div>
+            </div>
 
-            <p>
-                Savings: $
-                {Number(comparison.savings).toFixed(2)}
-            </p>
+            <section className="comparison-details-summary">
+                <div className="comparison-summary-card primary-summary">
+                    <span>Optimized Total</span>
 
-            <h2>Optimized Items</h2>
+                    <strong>
+                        $
+                        {Number(
+                            comparison.optimizedTotal
+                        ).toFixed(2)}
+                    </strong>
 
-            <ul>
-                {comparison.optimizedItems.map((item) => (
-                    <li key={item.productId}>
-                        {item.productName}
-                        {" — "}
-                        {item.cheapestStore?.name ?? "Not available"}
-                        {" — "}
-                        Quantity: {item.quantity}
-                    </li>
-                ))}
-            </ul>
+                    <small>
+                        Lowest calculated total
+                    </small>
+                </div>
+
+                <div className="comparison-summary-card">
+                    <span>Best Single Store</span>
+
+                    <strong>
+                        {comparison.cheapestSingleStoreTotal !== null
+                            ? `$${Number(
+                                comparison.cheapestSingleStoreTotal
+                            ).toFixed(2)}`
+                            : "N/A"}
+                    </strong>
+
+                    <small>
+                        Cost when shopping at one store
+                    </small>
+                </div>
+
+                <div className="comparison-summary-card savings-summary">
+                    <span>Savings</span>
+
+                    <strong>
+                        +$
+                        {Number(
+                            comparison.savings
+                        ).toFixed(2)}
+                    </strong>
+
+                    <small>
+                        Savings using optimized plan
+                    </small>
+                </div>
+            </section>
+
+            <section className="panel comparison-section">
+                <div className="panel-header">
+                    <div>
+                        <h2>Optimized Items</h2>
+
+                        <p>
+                            Recommended store for each product.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="comparison-table-wrapper">
+                    <table className="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Store</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {comparison.optimizedItems.map(
+                                (item) => (
+                                    <tr key={item.productId}>
+                                        <td>
+                                            <strong>
+                                                {item.productName}
+                                            </strong>
+                                        </td>
+
+                                        <td>
+                                            {item.cheapestStore?.name ??
+                                                "Not available"}
+                                        </td>
+
+                                        <td>
+                                            {item.quantity}
+                                        </td>
+
+                                        <td>
+                                            {item.unitPrice !== null
+                                                ? `$${Number(
+                                                    item.unitPrice
+                                                ).toFixed(2)}`
+                                                : "N/A"}
+                                        </td>
+
+                                        <td>
+                                            {item.totalPrice !== null
+                                                ? `$${Number(
+                                                    item.totalPrice
+                                                ).toFixed(2)}`
+                                                : "N/A"}
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     );
 }

@@ -45,47 +45,88 @@ export default function ComparisonsPage() {
     }
 
     return (
-        <div>
-            <h1>Comparison History</h1>
+        <div className="comparisons-page">
+            <div className="page-header">
+                <div>
+                    <p className="eyebrow">History</p>
+                    <h1>Comparison History</h1>
+                    <p>
+                        Review your previous shopping price comparisons.
+                    </p>
+                </div>
+            </div>
 
             {comparisons.length === 0 ? (
-                <p>No comparisons yet.</p>
+                <div className="panel">
+                    <p className="empty-state">
+                        No comparisons yet.
+                    </p>
+                </div>
             ) : (
-                <ul>
+                <div className="comparisons-list">
                     {comparisons.map((comparison) => (
-                        <li key={comparison.id}>
-                            <h3>
-                                <Link to={`/comparisons/${comparison.id}`}>
-                                    {comparison.shoppingListName}
-                                </Link>
-                            </h3>
+                        <Link
+                            key={comparison.id}
+                            to={`/comparisons/${comparison.id}`}
+                            className="comparison-history-card"
+                        >
+                            <div className="comparison-history-header">
+                                <div>
+                                    <h3>
+                                        {comparison.shoppingListName}
+                                    </h3>
 
-                            <p>
-                                Optimized total: $
-                                {Number(comparison.optimizedTotal).toFixed(2)}
-                            </p>
+                                    <span>
+                                        {new Date(
+                                            comparison.createdAt
+                                        ).toLocaleString()}
+                                    </span>
+                                </div>
 
-                            <p>
-                                Best single store: $
-                                {comparison.cheapestSingleStoreTotal !== null
-                                    ? Number(comparison.cheapestSingleStoreTotal).toFixed(2)
-                                    : "N/A"}
-                            </p>
+                                <span className="comparison-view-link">
+                                    View Details →
+                                </span>
+                            </div>
 
-                            <p>
-                                Savings: $
-                                {Number(comparison.savings).toFixed(2)}
-                            </p>
+                            <div className="comparison-history-stats">
+                                <div>
+                                    <span>Optimized Total</span>
 
-                            <p>
-                                Date:{" "}
-                                {new Date(
-                                    comparison.createdAt
-                                ).toLocaleString()}
-                            </p>
-                        </li>
+                                    <strong>
+                                        $
+                                        {Number(
+                                            comparison.optimizedTotal
+                                        ).toFixed(2)}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Best Single Store</span>
+
+                                    <strong>
+                                        {comparison.cheapestSingleStoreTotal !==
+                                        null
+                                            ? `$${Number(
+                                                comparison.cheapestSingleStoreTotal
+                                            ).toFixed(2)}`
+                                            : "N/A"}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Savings</span>
+
+                                    <strong className="history-savings">
+                                        +$
+                                        {Number(
+                                            comparison.savings
+                                        ).toFixed(2)}
+                                    </strong>
+                                </div>
+                            </div>
+                        </Link>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );

@@ -1179,3 +1179,134 @@ button {
         flex-direction: column;
     }
 }
+
+.comparisons-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.comparisons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.comparison-history-card {
+    display: block;
+    padding: 22px;
+
+    border: 1px solid #272b3a;
+    border-radius: 16px;
+
+    background: #171a24;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.comparison-history-card:hover {
+    transform: translateY(-2px);
+    border-color: #7c5cff;
+}
+
+.comparison-history-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+
+    border-bottom: 1px solid #272b3a;
+}
+
+.comparison-history-header h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.comparison-history-header span {
+    color: #858ca3;
+    font-size: 12px;
+}
+
+.comparison-view-link {
+    color: #9f87ff !important;
+    white-space: nowrap;
+}
+
+.comparison-history-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.comparison-history-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.comparison-history-stats span {
+    color: #858ca3;
+    font-size: 12px;
+}
+
+.comparison-history-stats strong {
+    font-size: 18px;
+}
+
+.history-savings {
+    color: #87e6a8;
+}
+
+@media (max-width: 720px) {
+    .comparison-history-header {
+        flex-direction: column;
+    }
+
+    .comparison-history-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparison-details-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.comparison-details-page .back-link {
+    display: inline-block;
+    margin-bottom: 22px;
+
+    color: #9f87ff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.comparison-details-page .back-link:hover {
+    text-decoration: underline;
+}
+
+.comparison-details-header {
+    margin-bottom: 24px;
+}
+
+.comparison-details-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+@media (max-width: 850px) {
+    .comparison-details-summary {
+        grid-template-columns: 1fr;
+    }
+}
