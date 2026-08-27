@@ -66,7 +66,14 @@ export async function getShoppingListsById(id: string, userId: string) {
         where: { id,  userId
         },
         include: {
-            user: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                },
+            },
             items: {
                 include: {
                     product: true,
@@ -80,6 +87,21 @@ export async function getShoppingListsById(id: string, userId: string) {
 export async function updateShoppingList(shoppingListId: string,userId: string, data: Partial<UpdateShoppingListData>) {
     const existingShoppingList = await prisma.shoppingList.findUnique({
         where: { id: shoppingListId, userId: userId },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                },
+            },
+            items: {
+                include: {
+                    product: true,
+                },
+            },
+        },
     });
     if (!existingShoppingList) {
         throw new Error("Shopping List not found");
@@ -93,9 +115,20 @@ export async function updateShoppingList(shoppingListId: string,userId: string, 
         where: { id: shoppingListId },
         data: updateData,
         include: {
-            user: true,
-            items: { include: { product: true } },
-        },
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true,
+                    },
+                },
+                items: {
+                    include: {
+                        product: true,
+                    },
+                },
+            },
     });
     return updatedShoppingList;
 }
@@ -107,7 +140,14 @@ export async function deleteShoppingList(ShoppingListid: string, userId: string)
             userId: userId,
         },
         include:{
-            user: true, 
+           user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                    },
+                }, 
             items: { include: { product: true } },
         },
     });
