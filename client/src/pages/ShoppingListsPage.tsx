@@ -77,52 +77,91 @@ export default function ShoppingListsPage() {
     }
 
     return (
-        <div>
-            <h1>Shopping Lists</h1>
+        <div className="shopping-lists-page">
+            <div className="page-header">
+                <div>
+                    <h1>Shopping Lists</h1>
+                    <p>Create and manage your shopping lists.</p>
+                </div>
+            </div>
 
-            <form onSubmit={handleCreateList}>
-                <input
-                    type="text"
-                    placeholder="New shopping list name"
-                    value={newListName}
-                    onChange={(event) =>
-                        setNewListName(event.target.value)
-                    }
-                />
-                <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="Budget"
-                    value={budget}
-                    onChange={(event) => setBudget(event.target.value)}
-                />
+            <div className="panel create-list-panel">
+                <h2>Create Shopping List</h2>
 
-                <button type="submit">
-                    Create List
-                </button>
-            </form>
+                <form
+                    onSubmit={handleCreateList}
+                    className="create-list-form"
+                >
+                    <input
+                        type="text"
+                        placeholder="Shopping list name"
+                        value={newListName}
+                        onChange={(event) =>
+                            setNewListName(event.target.value)
+                        }
+                    />
 
-            {error && <p>{error}</p>}
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Budget"
+                        value={budget}
+                        onChange={(event) =>
+                            setBudget(event.target.value)
+                        }
+                    />
+
+                    <button
+                        type="submit"
+                        className="primary-button"
+                    >
+                        Create List
+                    </button>
+                </form>
+            </div>
+
+            {error && (
+                <p className="error-message">
+                    {error}
+                </p>
+            )}
 
             {shoppingLists.length === 0 ? (
-                <p>No shopping lists yet.</p>
+                <div className="panel">
+                    <p className="empty-state">
+                        No shopping lists yet.
+                    </p>
+                </div>
             ) : (
-                <ul>
+                <div className="shopping-lists-grid">
                     {shoppingLists.map((list) => (
-                        <li key={list.id}>
-                            <Link to={`/shopping-lists/${list.id}`}>
-                                {list.name}
-                            </Link>
+                        <Link
+                            key={list.id}
+                            to={`/shopping-lists/${list.id}`}
+                            className="shopping-list-card"
+                        >
+                            <div>
+                                <h3>{list.name}</h3>
 
-                            {list.budget !== null && (
-                                <span>
-                                    {" "}— Budget: ${Number(list.budget).toFixed(2)}
-                                </span>
-                            )}
-                        </li>
+                                <p>
+                                    Created{" "}
+                                    {new Date(
+                                        list.createdAt
+                                    ).toLocaleDateString()}
+                                </p>
+                            </div>
+
+                            <div className="shopping-list-budget">
+                                {list.budget !== null
+                                    ? `$${Number(
+                                        list.budget
+                                    ).toFixed(2)}`
+                                    : "No budget"}
+                            </div>
+                        </Link>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );

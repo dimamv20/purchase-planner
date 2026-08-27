@@ -50,7 +50,6 @@ export default function ShoppingListPage() {
     const [budgetInput, setBudgetInput] = useState("");
     const [error, setError] = useState("");
     const [products, setProducts] = useState<AvailableProduct[]>([]);
-
     const [quantities, setQuantities] = useState<Record<string, number>>({});
 
 
@@ -260,121 +259,199 @@ export default function ShoppingListPage() {
     }
 
     return (
-        <div>
-            <h1>{shoppingList.name}</h1>
-            {shoppingList.budget !== null && (
-                <p>
-                    Budget: ${Number(shoppingList.budget).toFixed(2)}
-                </p>
-            )}
-            <div>
-                <input
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    placeholder="Budget"
-                    value={budgetInput}
-                    onChange={(event) =>
-                        setBudgetInput(event.target.value)
-                    }
-                />
+        <div className="shopping-list-details-page">
+            <div className="shopping-list-header">
+                <div>
+                    <p className="eyebrow">Shopping List</p>
+
+                    <h1>{shoppingList.name}</h1>
+
+                    {shoppingList.budget !== null && (
+                        <p className="budget-text">
+                            Budget: $
+                            {Number(shoppingList.budget).toFixed(2)}
+                        </p>
+                    )}
+                </div>
+
+            <div className="shopping-list-header-actions">
+                <div className="budget-editor">
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="No budget"
+                        value={budgetInput}
+                        onChange={(event) =>
+                            setBudgetInput(event.target.value)
+                        }
+                    />
+
+                    <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={handleUpdateBudget}
+                    >
+                        Update Budget
+                    </button>
+                </div>
 
                 <button
                     type="button"
-                    onClick={handleUpdateBudget}
+                    className="primary-button compare-button"
+                    onClick={handleCompare}
+                    disabled={shoppingList.items.length === 0}
                 >
-                    Update Budget
+                    Compare Prices
                 </button>
             </div>
-            {shoppingList.items.length === 0 ? (
-                <p>No products in this list.</p>
-            ) : (
-                <ul>
-                    {shoppingList.items.map((item) => (
-                        <li key={item.id}>
-                            <span>{item.product.name}</span>
+            </div>
 
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleUpdateQuantity(
-                                        item.id,
-                                        item.quantity - 1
-                                    )
-                                }
-                                disabled={item.quantity <= 1}
-                            >
-                                -
-                            </button>
+            <div className="shopping-list-layout">
+                <section className="panel shopping-items-panel">
+                    <div className="panel-header">
+                        <div>
+                            <h2>Items in this List</h2>
+                            <p>
+                                {shoppingList.items.length}{" "}
+                                {shoppingList.items.length === 1
+                                    ? "item"
+                                    : "items"}
+                            </p>
+                        </div>
+                    </div>
 
-                            <span>
-                                {item.quantity}
-                            </span>
+                    {shoppingList.items.length === 0 ? (
+                        <p className="empty-state">
+                            No products in this list.
+                        </p>
+                    ) : (
+                        <div className="shopping-items-list">
+                            {shoppingList.items.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="shopping-item-row"
+                                >
+                                    <div className="shopping-item-info">
+                                        <strong>
+                                            {item.product.name}
+                                        </strong>
 
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleUpdateQuantity(
-                                        item.id,
-                                        item.quantity + 1
-                                    )
-                                }
-                            >
-                                +
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => handleDeleteItem(item.id)}
-                            >
-                                Delete
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
-            <h2>Available Products</h2>
+                                        <span>
+                                            {item.product.brand}
+                                        </span>
+                                    </div>
 
-            {products.length === 0 ? (
-                <p>No products available.</p>
-            ) : (
-                <ul>
-                {products.map((product) => (
-                    <li key={product.id}>
-                        <span>
-                            {product.name}
-                            {product.brand && ` — ${product.brand}`}
-                        </span>
+                                    <div className="quantity-control">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                handleUpdateQuantity(
+                                                    item.id,
+                                                    item.quantity - 1
+                                                )
+                                            }
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            −
+                                        </button>
 
-                        <input
-                            type="number"
-                            min="1"
-                            value={quantities[product.id] ?? 1}
-                            onChange={(event) =>
-                                setQuantities((current) => ({
-                                    ...current,
-                                    [product.id]: Number(event.target.value),
-                                }))
-                            }
-                        />
+                                        <span>
+                                            {item.quantity}
+                                        </span>
 
-                        <button
-                            type="button"
-                            onClick={() => handleAddProduct(product.id)}
-                        >
-                            Add
-                        </button>
-                        
-                    </li>
-                ))}
-            </ul>
-            )}
-            <button
-                type="button"
-                onClick={handleCompare}
-            >
-                Compare Prices
-            </button>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                handleUpdateQuantity(
+                                                    item.id,
+                                                    item.quantity + 1
+                                                )
+                                            }
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        className="delete-button"
+                                        onClick={() =>
+                                            handleDeleteItem(item.id)
+                                        }
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+
+                <section className="panel available-products-panel">
+                    <div className="panel-header">
+                        <div>
+                            <h2>Available Products</h2>
+                            <p>Add products to this list.</p>
+                        </div>
+                    </div>
+
+                    {products.length === 0 ? (
+                        <p className="empty-state">
+                            No products available.
+                        </p>
+                    ) : (
+                        <div className="available-products-list">
+                            {products.map((product) => (
+                                <div
+                                    key={product.id}
+                                    className="available-product-row"
+                                >
+                                    <div>
+                                        <strong>{product.name}</strong>
+
+                                        {product.brand && (
+                                            <span>
+                                                {product.brand}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={
+                                            quantities[product.id] ?? 1
+                                        }
+                                        onChange={(event) =>
+                                            setQuantities(
+                                                (current) => ({
+                                                    ...current,
+                                                    [product.id]:
+                                                        Number(
+                                                            event.target
+                                                                .value
+                                                        ),
+                                                })
+                                            )
+                                        }
+                                    />
+
+                                    <button
+                                        type="button"
+                                        className="secondary-button"
+                                        onClick={() =>
+                                            handleAddProduct(product.id)
+                                        }
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+            </div>
         </div>
-        
     );
 }
