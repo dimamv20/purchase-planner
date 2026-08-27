@@ -86,23 +86,7 @@ export async function getShoppingListsById(id: string, userId: string) {
 
 export async function updateShoppingList(shoppingListId: string,userId: string, data: Partial<UpdateShoppingListData>) {
     const existingShoppingList = await prisma.shoppingList.findUnique({
-        where: { id: shoppingListId, userId: userId },
-        include: {
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
-                },
-            },
-            items: {
-                include: {
-                    product: true,
-                },
-            },
-        },
-    });
+    where: {id: shoppingListId,userId,},});
     if (!existingShoppingList) {
         throw new Error("Shopping List not found");
     }

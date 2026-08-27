@@ -54,9 +54,17 @@ export async function deleteShoppingListItemController(
     res: Response
 ) {
     const itemId = req.params.id;
+    const userId = res.locals.user.userId;
 
-    await deleteShoppingListItem(itemId);
+    if (typeof itemId !== "string") {
+        return res.status(400).json({
+            message: "Shopping list item id is required",
+        });
+    }
+
+    await deleteShoppingListItem(itemId, userId);
 
     return res.status(204).send();
 }
+
 

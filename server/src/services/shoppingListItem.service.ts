@@ -105,14 +105,20 @@ export async function getShoppingListItemById(
     return item;
 }
 
-export async function deleteShoppingListItem(itemId: string) {
-    const existingItem = await prisma.shoppingListItem.findUnique({
+export async function deleteShoppingListItem(
+    itemId: string,
+    userId: string
+) {
+    const existingItem = await prisma.shoppingListItem.findFirst({
         where: {
             id: itemId,
+            shoppingList: {
+                userId,
+            },
         },
     });
 
-    if (existingItem === null) {
+    if (!existingItem) {
         throw new Error("Shopping list item not found");
     }
 
