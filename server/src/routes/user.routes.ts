@@ -1,13 +1,12 @@
 import {Router} from "express";
-import {getUsersController} from "../controllers/user.controller.js";
-import {createUserController, getUserByIdController, updateUserController, deleteUserController} from "../controllers/user.controller.js";
+import {getUsersController, getUserByIdController, updateUserController, deleteUserController} from "../controllers/user.controller.js";
 
+import { authenticateToken } from "../middlewares/auth.middleware.js"
 
 const router = Router();
+router.use(authenticateToken);
 
 router.get("/", getUsersController);
-
-router.post("/", createUserController);
 
 router.get("/:id", getUserByIdController);
 
