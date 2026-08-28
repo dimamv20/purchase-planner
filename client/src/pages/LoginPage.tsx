@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { apiRequest } from "../services/api";
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,31 +13,23 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:5000/api/auth/login", {
+            const data = await apiRequest("/auth/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 body: JSON.stringify({
                     email,
                     password,
                 }),
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.message || "Login failed");
-                return;
-            }
-
             localStorage.setItem("token", data.token);
-            
-            console.log("Login success:", data);
 
             navigate("/dashboard");
-        } catch {
-            setError("Could not connect to server");
+        } catch (error) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "Login failed"
+            );
         }
     }
 
