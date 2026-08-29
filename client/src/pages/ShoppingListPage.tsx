@@ -51,7 +51,7 @@ export default function ShoppingListPage() {
     const [error, setError] = useState("");
     const [products, setProducts] = useState<AvailableProduct[]>([]);
     const [quantities, setQuantities] = useState<Record<string, number>>({});
-
+    const [nameInput, setNameInput] = useState("");
 
     useEffect(() => {
         async function loadShoppingList() {
@@ -65,6 +65,7 @@ export default function ShoppingListPage() {
                 );
 
                 setShoppingList(data);
+                setNameInput(data.name);
                 setBudgetInput(data.budget !== null? String(data.budget): "");
                 const productsData: ProductsResponse = await apiRequest("/products");
 
@@ -205,6 +206,73 @@ export default function ShoppingListPage() {
             );
         }
     }
+
+    async function handleUpdateName() {
+        if (!id || !shoppingList) {
+            return;
+        }
+
+        const trimmedName = nameInput.trim();
+
+        if (!trimmedName) {
+            setError("Shopping list name is required");
+            return;
+        }
+
+        try {
+            const updatedList = await apiRequest(
+                `/shopping-lists/${id}`,
+                {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        name: trimmedName,
+                    }),
+                }
+            );
+
+            setShoppingList(updatedList);
+            setNameInput(updatedList.name);
+            setError("");
+        } catch (error) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "Could not update shopping list name"
+            );
+        }
+    }
+
+    async function handleDeleteShoppingList() {
+        if (!id || !shoppingList) {
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Delete "${shoppingList.name}"? This action cannot be undone.`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await apiRequest(
+                `/shopping-lists/${id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            navigate("/shopping-lists");
+        } catch (error) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "Could not delete shopping list"
+            );
+        }
+    }
+
     async function handleCompare() {
         if (!id || !shoppingList) {
             return;
@@ -261,15 +329,39 @@ export default function ShoppingListPage() {
     return (
         <div className="shopping-list-details-page">
             <div className="shopping-list-header">
-                <div>
-                    <p className="eyebrow">Shopping List</p>
+                <div className="shopping-list-title-section">
+                    <p className="eyebrow">
+                        Shopping List
+                    </p>
 
-                    <h1>{shoppingList.name}</h1>
+                    <div className="shopping-list-name-editor">
+                        <input
+                            type="text"
+                            value={nameInput}
+                            onChange={(event) =>
+                                setNameInput(event.target.value)
+                            }
+                        />
+
+                        <button
+                            type="button"
+                            className="secondary-button"
+                            onClick={handleUpdateName}
+                            disabled={
+                                !nameInput.trim() ||
+                                nameInput.trim() === shoppingList.name
+                            }
+                        >
+                            Rename
+                        </button>
+                    </div>
 
                     {shoppingList.budget !== null && (
                         <p className="budget-text">
                             Budget: $
-                            {Number(shoppingList.budget).toFixed(2)}
+                            {Number(
+                                shoppingList.budget
+                            ).toFixed(2)}
                         </p>
                     )}
                 </div>
@@ -286,7 +378,7 @@ export default function ShoppingListPage() {
                             setBudgetInput(event.target.value)
                         }
                     />
-
+                    
                     <button
                         type="button"
                         className="secondary-button"
@@ -296,14 +388,24 @@ export default function ShoppingListPage() {
                     </button>
                 </div>
 
-                <button
-                    type="button"
-                    className="primary-button compare-button"
-                    onClick={handleCompare}
-                    disabled={shoppingList.items.length === 0}
-                >
-                    Compare Prices
-                </button>
+                <div className="shopping-list-main-actions">
+                    <button
+                        type="button"
+                        className="primary-button compare-button"
+                        onClick={handleCompare}
+                        disabled={shoppingList.items.length === 0}
+                    >
+                        Compare Prices
+                    </button>
+
+                    <button
+                        type="button"
+                        className="delete-list-button"
+                        onClick={handleDeleteShoppingList}
+                    >
+                        Delete List
+                    </button>
+                </div>
             </div>
             </div>
 

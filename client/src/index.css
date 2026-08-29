@@ -1669,3 +1669,94 @@ button {
         font-size: 24px;
     }
 }
+
+.shopping-list-title-section {
+    min-width: 0;
+}
+
+.shopping-list-name-editor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 6px 0 10px;
+}
+
+.shopping-list-name-editor input {
+    min-width: 260px;
+    height: 42px;
+
+    padding: 0 12px;
+
+    border: 1px solid #303548;
+    border-radius: 9px;
+
+    background: #0f1117;
+    color: #f5f7fb;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    outline: none;
+}
+
+.shopping-list-name-editor input:focus {
+    border-color: #7c5cff;
+}
+
+.shopping-list-name-editor .secondary-button {
+    margin-top: 0;
+}
+
+.shopping-list-name-editor button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.delete-list-button {
+    padding: 10px 14px;
+
+    border: 1px solid rgba(255, 123, 134, 0.35);
+    border-radius: 9px;
+
+    background: rgba(255, 123, 134, 0.08);
+    color: #ff7b86;
+
+    white-space: nowrap;
+}
+
+.delete-list-button:hover {
+    background: rgba(255, 123, 134, 0.15);
+}
+
+@media (max-width: 720px) {
+    .shopping-list-name-editor {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .shopping-list-name-editor input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+}
+
+.compare-button {
+    margin-right: 14px;
+}
+
+.shopping-list-main-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+@media (max-width: 720px) {
+    .shopping-list-main-actions {
+        width: 100%;
+    }
+
+    .shopping-list-main-actions button {
+        flex: 1;
+    }
+}
