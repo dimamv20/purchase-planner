@@ -1760,3 +1760,9 @@ button {
         flex: 1;
     }
 }
+
+.quantity-error {
+    margin: 6px 0 0;
+    color: #ff7b86;
+    font-size: 12px;
+}

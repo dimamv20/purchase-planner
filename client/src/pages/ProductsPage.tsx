@@ -46,7 +46,7 @@ export default function ProductsPage() {
     const [successMessage, setSuccessMessage] = useState("");
     const [categories, setCategories] = useState<Category[]>([]);
     const [categoryId, setCategoryId] = useState("");
-
+    const [quantityError, setQuantityError] = useState("");
     const [pagination, setPagination] = useState({
         page: 1,
         limit: 10,
@@ -124,10 +124,17 @@ export default function ProductsPage() {
 
         loadShoppingLists();
     }, []);
-    async function handleAddToList() {
+   async function handleAddToList() {
         if (!selectedProductId || !selectedListId) {
             return;
         }
+
+        if (quantity === "" || quantity < 1) {
+            setQuantityError("Quantity must be at least 1");
+            return;
+        }
+
+        setQuantityError("");
 
         try {
             await apiRequest(
@@ -144,11 +151,12 @@ export default function ProductsPage() {
             setSuccessMessage("Product added to shopping list");
             setSelectedProductId(null);
             setQuantity(1);
+            setQuantityError("");
         } catch (error) {
             setError(
                 error instanceof Error
                     ? error.message
-                    : "Could not add product to shopping list"
+                    : "Could not add product"
             );
         }
     }
@@ -312,9 +320,15 @@ export default function ProductsPage() {
                                             ? ""
                                             : Number(value)
                                     );
+                                    setQuantityError("");
                                 }}
                             />
-
+                            
+                            {quantityError && (
+                                <p className="quantity-error">
+                                    {quantityError}
+                                </p>
+                            )}
                             <div className="modal-actions">
                                 <button
                                     type="button"

@@ -12,6 +12,8 @@ type Price = {
     id: string;
     regularPrice: string | number;
     salePrice: string | number | null;
+    saleStartsAt: string | null;
+    saleEndsAt: string | null;
     isAvailable: boolean;
     store: Store;
 };
@@ -76,7 +78,22 @@ export default function ProductDetailsPage() {
     }
 
     const getCurrentPrice = (price: Price) => {
-        return price.salePrice !== null
+        const now = new Date();
+
+        const saleStart = price.saleStartsAt
+            ? new Date(price.saleStartsAt)
+            : null;
+
+        const saleEnd = price.saleEndsAt
+            ? new Date(price.saleEndsAt)
+            : null;
+
+        const saleIsActive =
+            price.salePrice !== null &&
+            (!saleStart || saleStart <= now) &&
+            (!saleEnd || saleEnd >= now);
+
+        return saleIsActive
             ? Number(price.salePrice)
             : Number(price.regularPrice);
     };
