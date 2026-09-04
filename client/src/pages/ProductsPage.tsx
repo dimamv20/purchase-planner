@@ -42,7 +42,7 @@ export default function ProductsPage() {
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [selectedListId, setSelectedListId] = useState("");
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState<number | "">(1);
     const [successMessage, setSuccessMessage] = useState("");
     const [categories, setCategories] = useState<Category[]>([]);
     const [categoryId, setCategoryId] = useState("");
@@ -304,9 +304,15 @@ export default function ProductsPage() {
                                 type="number"
                                 min="1"
                                 value={quantity}
-                                onChange={(event) =>
-                                    setQuantity(Number(event.target.value))
-                                }
+                                onChange={(event) => {
+                                    const value = event.target.value;
+
+                                    setQuantity(
+                                        value === ""
+                                            ? ""
+                                            : Number(value)
+                                    );
+                                }}
                             />
 
                             <div className="modal-actions">

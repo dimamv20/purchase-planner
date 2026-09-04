@@ -30,6 +30,28 @@ export async function addShoppingListItem(shoppingListId: string,userId: string,
     if (!product) {
         throw new Error("Product not found");
     }
+    const existingItem = await prisma.shoppingListItem.findFirst({
+        where: {
+            shoppingListId,
+            productId: data.productId,
+        },
+    });
+
+    if (existingItem) {
+        const updatedItem = await prisma.shoppingListItem.update({
+            where: {
+                id: existingItem.id,
+            },
+            data: {
+                quantity: existingItem.quantity + data.quantity,
+            },
+            include: {
+                product: true,
+            },
+        });
+
+        return updatedItem;
+    }
 
     const item = await prisma.shoppingListItem.create({
         data: {
