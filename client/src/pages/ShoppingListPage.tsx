@@ -366,32 +366,31 @@ export default function ShoppingListPage() {
                     )}
                 </div>
 
-            <div className="shopping-list-header-actions">
-                <div className="budget-editor">
+                <div className="shopping-list-toolbar">
                     <input
+                        className="budget-toolbar-input"
                         type="number"
                         min="0"
                         step="0.01"
-                        placeholder="No budget"
+                        placeholder="Budget"
                         value={budgetInput}
                         onChange={(event) =>
                             setBudgetInput(event.target.value)
                         }
+                        aria-label="Shopping list budget"
                     />
-                    
+
                     <button
                         type="button"
-                        className="secondary-button"
+                        className="secondary-button toolbar-button"
                         onClick={handleUpdateBudget}
                     >
                         Update Budget
                     </button>
-                </div>
 
-                <div className="shopping-list-main-actions">
                     <button
                         type="button"
-                        className="primary-button compare-button"
+                        className="primary-button toolbar-button"
                         onClick={handleCompare}
                         disabled={shoppingList.items.length === 0}
                     >
@@ -400,13 +399,12 @@ export default function ShoppingListPage() {
 
                     <button
                         type="button"
-                        className="delete-list-button"
+                        className="delete-list-button toolbar-button"
                         onClick={handleDeleteShoppingList}
                     >
                         Delete List
                     </button>
                 </div>
-            </div>
             </div>
 
             <div className="shopping-list-layout">
